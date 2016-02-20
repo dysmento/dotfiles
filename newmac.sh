@@ -1,6 +1,6 @@
 #!/bin/bash
-if [ "$#" -ne 1 ]; then
-   echo "Usage: `basename $0` <github password>"
+if [ "$#" -ne 2 ]; then
+   echo "Usage: `basename $0` <github password> <bitbucket password>"
    exit 0
 fi
 
@@ -44,8 +44,10 @@ git config --global github.user dysmento
 git config --global color.ui true
 git config --global push.default simple
 
-# add your new public key to github
-http -a dysmento:$1 https://api.github.com/user/keys title=`hostname` key="`cat ~/.ssh/id_rsa.pub`"
+# add your new public key to github and bitbucket
+http -a "dysmento:$1" https://api.github.com/user/keys title=`hostname` key="`cat ~/.ssh/id_rsa.pub`"
+http -a "zathomas:$2" https://api.bitbucket.org/1.0/users/zathomas/ssh-keys accountname=zathomas key="`cat ~/.ssh/id_rsa.pub`" label=`hostname`
+
 # spacemacs
 [ -d ~/.emacs.d ] && echo "emacs configured already" \
         || git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
