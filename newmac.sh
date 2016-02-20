@@ -63,7 +63,7 @@ brew cask install       \
      1password          \
      amazon-music       \
      dropbox            \
-     caffeine           \
+     viscosity          \
      java               \
      intellij-idea
 
