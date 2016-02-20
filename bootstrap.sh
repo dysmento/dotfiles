@@ -1,3 +1,4 @@
 #!/bin/bash
-curl -s --compressed https://github.com/dysmento/dotfiles/archive/master.zip
+curl -O  https://github.com/dysmento/dotfiles/archive/master.zip
+unzip master.zip
 
