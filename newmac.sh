@@ -68,7 +68,7 @@ brew cask install       \
      intellij-idea
 
 # prezto
-[ -d ~/.zprezto ] && echo "prezto configured already" || ~/prezto.sh
+[ -d ~/.zprezto ] && echo "prezto configured already" || ~/dotfiles-master/prezto.sh
 
 # login items
 LOGIN_ITEMS=[ `osascript -e 'tell application "System Events" to get login item "Launchbar" exists'` ] && \
