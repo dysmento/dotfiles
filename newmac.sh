@@ -22,6 +22,9 @@ defaults -currentHost write -g com.apple.keyboard.modifiermapping.1452-575-0 -ar
 # accept XCode license
 xcode-select --install
 
+# TODO: get settings.xml for maven
+# TODO: get Cisco VPN client at https://indvpn.inin.com
+
 # install Homebrew
 [ -d /usr/local/Cellar ] && echo "homebrew installed already" \
        || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
