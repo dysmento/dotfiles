@@ -7,7 +7,7 @@ fi
 
 # dock preferences
 defaults write com.apple.dock autohide 1
-defaults write com.apple.dock largesize 65
+defaults write com.apple.dock largesize 64
 defaults write com.apple.dock magnification 1
 defaults write com.apple.dock mineffect scale
 defaults write com.apple.dock orientation right
@@ -81,6 +81,7 @@ brew cask install       \
      amazon-music       \
      dropbox            \
      viscosity          \
+     nvalt              \
      java               \
      intellij-idea
 
@@ -88,7 +89,8 @@ brew cask install       \
 [ -d ~/.zprezto ] && echo "prezto configured already" || ~/dotfiles-master/prezto.sh
 
 # login items
-    osascript -e 'tell application "System Events" to make new login item at end with properties {path:"/Users/zach/Applications/LaunchBar.app", name:"LaunchBar", hidden:true}'
-    osascript -e 'tell application "System Events" to make new login item at end with properties {path:"/Users/zach/Applications/Dropbox.app", name:"Dropbox", hidden:true}'
-    osascript -e 'tell application "System Events" to log out'
+osascript -e 'tell application "System Events" to make new login item at end with properties {path:"/Users/zach/Applications/LaunchBar.app", name:"LaunchBar", hidden:true}'
+osascript -e 'tell application "System Events" to make new login item at end with properties {path:"/Users/zach/Applications/Dropbox.app", name:"Dropbox", hidden:true}'
+osascript -e 'tell application "System Events" to make new login item at end with properties {path:"/Users/zach/Applications/Viscosity.app", name:"Viscosity", hidden:true}'
+osascript -e 'tell application "System Events" to log out'
 
