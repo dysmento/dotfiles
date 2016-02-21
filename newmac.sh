@@ -1,3 +1,4 @@
+
 #!/bin/bash
 if [ "$#" -ne 2 ]; then
    echo "Usage: `basename $0` <github password> <bitbucket password>"
@@ -32,11 +33,16 @@ brew install   \
      maven     \
      git       \
      zsh       \
+     wget      \
      awscli    \
      httpie    \
-     jq        \
-     emacs-mac
+     tmux      \
+     boot-clj  \
+     jq
 
+brew tap railwaycat/homebrew-emacsmacport
+brew install emacs-mac --with-spacemacs-icon
+brew linkapps
 # git config
 git config --global user.name "Zach A. Thomas"
 git config --global user.email "zach.thomas@inin.com"
@@ -51,6 +57,14 @@ http -a "zathomas:$2" https://api.bitbucket.org/1.0/users/zathomas/ssh-keys acco
 # spacemacs
 [ -d ~/.emacs.d ] && echo "emacs configured already" \
         || git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+
+# sdkman
+[ -d ~/.sdkman ] && echo "sdkman configured already" \
+                         || curl -s get.sdkman.io | bash
+
+# get solarized
+[ -f ~/solarized.zip ] && echo "solarized already downloaded" \
+                               || curl -O http://ethanschoonover.com/solarized/files/solarized.zip
 
 # add brew support for fonts
 brew tap caskroom/fonts
@@ -71,13 +85,7 @@ brew cask install       \
 [ -d ~/.zprezto ] && echo "prezto configured already" || ~/dotfiles-master/prezto.sh
 
 # login items
-LOGIN_ITEMS=[ `osascript -e 'tell application "System Events" to get login item "Launchbar" exists'` ] && \
-    [ `osascript -e 'tell application "System Events" to get login item "Dropbox" exists'` ]
-if [ LOGIN_ITEMS ]; then
-    echo "login items configured already"
-else
-    osascript -e 'tell application "System Events" to make new login item at end with properties {path:"/Applications/LaunchBar.app", name:"LaunchBar", hidden:true}'
-    osascript -e 'tell application "System Events" to make new login item at end with properties {path:"/Applications/Dropbox.app", name:"Dropbox", hidden:true}'
+    osascript -e 'tell application "System Events" to make new login item at end with properties {path:"/Users/zach/Applications/LaunchBar.app", name:"LaunchBar", hidden:true}'
+    osascript -e 'tell application "System Events" to make new login item at end with properties {path:"/Users/zach/Applications/Dropbox.app", name:"Dropbox", hidden:true}'
     osascript -e 'tell application "System Events" to log out'
-fi
 
