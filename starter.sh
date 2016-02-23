@@ -1,6 +1,6 @@
 #!/bin/bash
 xcode-select --install
-sudo easy_install_pip
+sudo easy_install pip
 sudo pip install ansible
 mkdir ~/dev
 git clone https://github.com/dysmento/starter.git ~/dev/starter
