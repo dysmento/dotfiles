@@ -1,0 +1,470 @@
+#+TITLE: Emacs Config
+#+AUTHOR: Zach Thomas
+#+TOC: true
+#+DATE: 2021-11-22
+#+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el :results none
+* The Best Emacs Configuration Of Them All
+** Configure package sources
+#+begin_src emacs-lisp :results none
+  ;; -*- lexical-binding: t; -*-
+
+  ;; The default is 800 kbytes. Measured in bytes.
+  (setq gc-cons-threshold (* 50 1000 1000))
+
+  (require 'package)
+  (setq package-enable-at-startup nil)
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                           ("melpa-stable" . "https://stable.melpa.org/packages/")
+                           ("org" . "https://orgmode.org/elpa/")
+                           ("elpa" . "https://elpa.gnu.org/packages/")))
+
+  (package-initialize)
+
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package)
+    (eval-when-compile (require 'use-package)))
+
+  (use-package exec-path-from-shell
+    :init (exec-path-from-shell-initialize))
+#+end_src
+
+** Server
+#+begin_src emacs-lisp
+  (server-start)
+#+end_src
+** UI Nice Things
+#+begin_src emacs-lisp
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+  (set-face-attribute 'default nil :font "Fira Code" :height 170)
+
+  ;; Thanks, but no thanks
+  (setq inhibit-startup-message t)
+
+  (defalias 'yes-or-no-p 'y-or-n-p)
+
+  (scroll-bar-mode -1)          ; Disable visible scrollbar
+  (tool-bar-mode -1)            ; Disable the toolbar
+  (tooltip-mode -1)             ; Disable tooltips
+  (set-fringe-mode 10)          ; Give some breathing room
+  (menu-bar-mode -1)            ; Disable the menu bar
+  (add-to-list 'default-frame-alist '(height . 77))
+  (add-to-list 'default-frame-alist '(width . 148))
+
+  (use-package diminish)
+  (use-package doom-modeline
+    :ensure t
+    :init (doom-modeline-mode 1))
+
+  ;; built in themes:
+  ;; adwaita, deeper-blue, dichromacy, leuven, light-blue, manoj-dark,
+  ;; misterioso, tango-dark, tango, tsdh-dark, tsdh-light, wheatgrass,
+  ;; whiteboard, wombat
+  ;;(load-theme 'wombat)
+  (use-package doom-themes
+    :init (load-theme 'doom-dracula t))
+
+  ;; Set up the visible bell
+  (setq visible-bell t)
+  (column-number-mode)
+  (global-display-line-numbers-mode t)
+  ;; Disable line numbers for some modes
+  (dolist (mode '(org-mode-hook
+                  term-mode-hook
+                  shell-mode-hook
+                  treemacs-mode-hook
+                  eshell-mode-hook))
+    (add-hook mode (lambda () (display-line-numbers-mode 0))))
+#+end_src
+
+** Backups
+   A common frustration with new Emacs users is the ~filename#~ files
+   created. This centralizes the backup files created as you edit.
+#+begin_src emacs-lisp
+    (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
+          backup-by-copying t
+          version-control t
+          delete-old-versions t
+          kept-new-versions 20
+          kept-old-versions 5)
+#+end_src
+
+** which-key
+#+begin_src emacs-lisp
+      (use-package general
+        :config
+        (general-evil-setup t)
+
+        (general-create-definer zt/leader-key-def
+          :keymaps '(normal insert visual emacs)
+          :prefix "SPC"
+          :global-prefix "C-SPC")
+
+        (general-create-definer zt/ctrl-c-keys
+          :prefix "C-c"))
+
+        (zt/leader-key-def
+         "f" '(:ignore t :which-key "files")
+         "fs" 'save-buffer
+         "fed" '(lambda () (interactive) (find-file (expand-file-name "~/dotfiles/config.org")))
+         "TAB" 'crux-switch-to-previous-buffer
+         "l" 'list-packages)
+
+       (zt/leader-key-def
+         "b" '(:ignore t :which-key "buffers")
+         "bb" 'counsel-switch-buffer)
+
+    (zt/leader-key-def
+      "j" 'avy-goto-char-2)
+
+    (zt/leader-key-def
+      "t" '(:ignore t :which-key "toggles")
+      "tg" 'golden-ratio-mode
+      "tp" 'parinfer-toggle-mode)
+
+        (use-package which-key
+          :init (which-key-mode)
+          :diminish which-key-mode
+          :config
+          (setq which-key-idle-delay 0.3))
+  (global-set-key (kbd "C-.") 'completion-at-point)
+  (global-set-key (kbd "C-W") 'ace-window)
+  (global-set-key (kbd "M-+") 'text-scale-increase)
+  (global-set-key (kbd "M--") 'text-scale-decrease)
+  (global-set-key (kbd "s-j") 'cider-eval-sexp-end-of-line)
+  (global-set-key [s-mouse-1] 'evil-goto-definition)
+  (global-set-key (kbd "C-)") 'paredit-forward-slurp-sexp)
+  (global-set-key (kbd "C-(") 'paredit-backward-slurp-sexp)
+  (global-set-key (kbd "C-}") 'paredit-forward-barf-sexp)
+  (global-set-key (kbd "C-{") 'paredit-backward-barf-sexp)
+
+#+end_src
+
+** The Golden Ratio
+This is a fun little package that adjusts window sizes.
+#+begin_src emacs-lisp
+(use-package golden-ratio)
+#+end_src
+** Clojure Things!
+Clojure is just an amazing feat of engineering and language
+design. See more at the [[https://clojure.org][official site]].
+#+begin_src emacs-lisp
+            (use-package clojure-mode
+              :mode "\\.clj[sc]?\\'")
+
+            (add-hook 'clojure-mode-hook #'enable-paredit-mode)
+            (use-package cider)
+
+            (use-package clj-refactor)
+            (setq cljr-warn-on-eval nil)
+            (use-package parinfer
+              :disabled
+              :hook ((clojure-mode . parinfer-mode)
+                     (emacs-lisp-mode . parinfer-mode)
+                     (common-lisp-mode . parinfer-mode)
+                     (scheme-mode . parinfer-mode)
+                    (lisp-mode . parinfer-mode))
+              :config
+              (setq parinfer-extensions
+                    '(defaults
+                       pretty-parens
+                       evil
+                       smart-tab
+                       smart-yank)))
+        (zt/leader-key-def
+          "c" '(:ignore t :which-key "clojure")
+          "cj" 'cider-jack-in-clj
+          "cg" 'evil-goto-definition
+          "cu" 'cljr-find-usages
+          "cb" 'cider-eval-buffer
+          "cd" 'cider-doc)
+      (use-package lsp-mode
+        :commands (lsp lsp-deferred)
+        :init
+        (setq lsp-keymap-prefix "C-c l")
+        :config
+        (lsp-enable-which-key-integration t))
+      (use-package yaml-mode)
+
+   (add-hook 'clojure-mode-hook 'lsp)
+   (add-hook 'clojurescript-mode-hook 'lsp)
+   (add-hook 'clojurec-mode-hook 'lsp)
+#+end_src
+
+** Command Completion
+#+begin_src emacs-lisp
+  (use-package ivy
+    :diminish
+    :bind (("C-s" . swiper)
+           :map ivy-minibuffer-map
+           ("TAB" . ivy-alt-done)
+           ("C-l" . ivy-alt-done)
+           ("C-j" . ivy-next-line)
+           ("C-k" . ivy-previous-line)
+           :map ivy-switch-buffer-map
+           ("C-k" . ivy-previous-line)
+           ("C-l" . ivy-done)
+           ("C-d" . ivy-switch-buffer-kill)
+           :map ivy-reverse-i-search-map
+           ("C-k" . ivy-previous-line)
+           ("C-d" . ivy-reverse-i-search-kill))
+    :config
+    (ivy-mode 1))
+
+  (use-package counsel
+    :bind (("C-M-j" . 'counsel-switch-buffer)
+             ("M-x" . 'counsel-M-x)
+           :map minibuffer-local-map
+           ("C-r" . 'counsel-minibuffer-history))
+    :custom
+    (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
+    :config
+    (counsel-mode 1))
+
+  (use-package prescient)
+  (use-package ivy-prescient
+       :config
+       (ivy-prescient-mode t))
+#+end_src
+** Treemacs
+#+begin_src emacs-lisp
+  (use-package treemacs
+    :ensure t
+    :defer t
+    :init
+    (with-eval-after-load 'winup
+      (define-key winum-keymap (kbd "<f8>") #'treemacs-select-window)))
+(global-set-key [f8] 'treemacs)
+(use-package treemacs-evil
+  :after (treemacs evil)
+  :ensure t)
+
+(use-package treemacs-projectile
+  :after (treemacs projectile)
+  :ensure t)
+
+(use-package treemacs-icons-dired
+  :hook (dired-mode . treemacs-icons-dired-enable-once)
+  :ensure t)
+
+(use-package treemacs-magit
+  :after (treemacs magit)
+  :ensure t)
+(use-package lsp-treemacs)
+#+end_src
+** Evil Mode
+   Vim emulation for Emacs.
+#+begin_src emacs-lisp
+    (use-package undo-tree
+      :init
+      (global-undo-tree-mode 1))
+
+ (use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump nil)
+  (setq evil-respect-visual-line-mode t)
+  (setq evil-undo-system 'undo-tree)
+  :config
+  (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+
+  ;; Use visual line motions even outside of visual-line-mode buffers
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+  (evil-set-initial-state 'messages-buffer-mode 'normal)
+  (evil-set-initial-state 'dashboard-mode 'normal))
+
+(use-package evil-collection
+  :after evil
+  :init
+  (setq evil-collection-company-use-tng nil)  ;; Is this a bug in evil-collection?
+  :custom
+  (evil-collection-outline-bind-tab-p nil)
+  :config
+  (delete 'lispy evil-collection-mode-list)
+  (delete 'org-present evil-collection-mode-list)
+  (evil-collection-init))   (use-package evil
+      :init
+      (setq evil-undo-system 'undo-tree)
+      :config
+      (evil-mode 1)
+      (evil-set-initial-state 'treemacs 'emacs))
+#+end_src
+
+** crux by Bozhidar Batsov
+See all about it at https://github.com/bbatsov/crux
+#+begin_src emacs-lisp
+  (use-package crux)
+  (global-set-key (kbd "M-o") #'crux-other-window-or-switch-buffer)
+  (global-set-key (kbd "s-<backspace>") #'crux-kill-whole-line)
+  (global-set-key (kbd "s-d") #'crux-duplicate-current-line-or-region)
+  (global-set-key (kbd "C-c u") #'crux-view-url)
+#+end_src
+** Org Mode
+#+begin_src emacs-lisp
+         (defun zt/org-mode-setup ()
+           (org-indent-mode)
+           (variable-pitch-mode 1)
+           (auto-fill-mode 1)
+           (setq evil-auto-indent nil)
+           (diminish org-indent-mode))
+
+         (use-package org
+           :defer t
+           :hook (org-mode . zt/org-mode-setup)
+           :config
+           (setq org-src-fontify-natively t)
+           (setq org-modules
+             '(org-crypt
+                 org-habit
+                 org-bookmark
+                 org-eshell
+                 org-irc))
+           (org-babel-do-load-languages
+              'org-babel-load-languages
+              '((emacs-lisp . t)
+                (ledger . t))))
+    (use-package org-bullets
+        :config
+        (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+    (use-package org-re-reveal)
+    (use-package evil-org
+      :ensure t
+      :after org
+      :hook (org-mode . (lambda () evil-org-mode))
+      :config
+      (require 'evil-org-agenda)
+      (evil-org-agenda-set-keys))
+
+    (global-set-key (kbd "C-c b") 'org-switchb)
+    (global-set-key (kbd "C-c c") 'org-capture)
+    (setq org-re-reveal-root "file:///usr/local/lib/node_modules/reveal.js")
+    (setq org-directory "~/Library/Mobile\ Documents/iCloud~com~appsonthemove~beorg/Documents/org")
+    (setq org-agenda-files (quote ("~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org")))
+    (setq-default fill-column 80)
+    (setq org-todo-keywords
+          (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+                  (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))))
+    (setq org-capture-templates
+          (quote (("t" "todo" entry (file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/inbox.org")
+                   "* TODO %?\n%U\n%a\n")
+                  ("j" "journal" entry (file+datetree "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/journal.org")
+                   "* %?\nEntered on %U\n %i\n %a"))))
+    (setq org-use-fast-todo-selection t)
+    (setq org-image-actual-width nil)
+    (setq org-M-RET-may-split-line nil)
+    (setq org-return-follows-link t)
+    (zt/leader-key-def
+      "o" '(:ignore t :which-key "org")
+      "oa" 'org-agenda
+      "ob" 'org-switchb
+      "oc" 'org-capture
+      "oe" 'org-export-dispatch
+      "on" 'org-cycle-agenda-files)
+
+        (use-package org-roam
+           :ensure t
+           :custom
+           (org-roam-directory (file-truename "~/org-roam/"))
+           :bind (("C-c n l" . org-roam-buffer-toggle)
+              ("C-c n f" . org-roam-node-find)
+              ("C-c n g" . org-roam-graph)
+              ("C-c n i" . org-roam-node-insert)
+              ("C-c n c" . org-roam-capture)
+              ;; Dailies
+              ("C-c n j" . org-roam-dailies-capture-today))
+           :config
+           (org-roam-db-autosync-mode)
+          ;; If using org-roam-protocol
+           (require 'org-roam-protocol))
+    (setq org-roam-completion-everywhere t)
+    (setq org-roam-dailies-directory "daily/")
+    (setq org-roam-v2-ack t)
+    (setq org-roam-capture-templates
+          '(("d" "default" plain "%?"
+             :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                "#+title: ${title}\n")
+             :unarrowed t)
+            ("m" "meeting" plain
+             (file "~/org-roam/templates/MeetingTemplate.org")
+             :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                "#+title: ${title}\n#+filetags: Meetings\n")
+             :unarrowed t)
+            ("b" "book" plain "* Book Info\n\n- Author: %^{Author}\n\n* Notes\n\n  %?"
+             :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                "#+title: ${title}\n#+filetags: Books %^{Fiction?}\n")
+             :unarrowed t)))
+    (setq org-roam-dailies-capture-templates
+          '(("d" "default" entry
+             "* %?"
+             :if-new (file+head "%<%Y-%m-%d>.org"
+                                "#+title: %<%Y-%m-%d>\n"))))
+
+      (zt/leader-key-def
+        "r" '(:ignore t :which-key "roam")
+        "rb" 'org-roam-buffer-toggle
+        "rc" 'org-roam-capture
+        "rd" 'org-roam-dailies-capture-today
+        "rt" 'org-roam-dailies-goto-today
+        "ri" 'org-roam-node-insert
+        "rf" 'org-roam-node-find)
+    (global-set-key (kbd "<f12>") 'org-agenda)
+#+end_src
+
+** Rainbow Delimiters
+   #+begin_src emacs-lisp
+     (use-package rainbow-delimiters
+        :hook (prog-mode . rainbow-delimiters-mode))
+   #+end_src
+
+** Projectile
+#+begin_src emacs-lisp
+  (use-package projectile
+    :ensure t
+    :pin melpa-stable
+    :init
+    (projectile-mode +1)
+    :bind (:map projectile-mode-map))
+  (use-package counsel-projectile)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+  (zt/leader-key-def
+    "/" 'counsel-projectile-rg
+    "p" '(:ignore t :which-key "project")
+    "pf"  'counsel-projectile-find-file
+    "ps"  'treemacs-projectile
+    "pF"  'consult-ripgrep
+    "pp"  'projectile-find-file
+    "pc"  'projectile-compile-project
+    "pd"  'projectile-dired)
+#+end_src
+
+** Magit
+#+begin_src emacs-lisp
+(use-package magit
+  :bind ("C-M-;" . magit-status)
+  :commands (magit-status magit-get-current-branch)
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+
+(zt/leader-key-def
+  "g"   '(:ignore t :which-key "git")
+  "gs"  'magit-status
+  "gd"  'magit-diff-unstaged
+  "gc"  'magit-branch-or-checkout
+  "gl"   '(:ignore t :which-key "log")
+  "glc" 'magit-log-current
+  "glf" 'magit-log-buffer-file
+  "gb"  'magit-branch
+  "gP"  'magit-push-current
+  "gp"  'magit-pull-branch
+  "gf"  'magit-fetch
+  "gF"  'magit-fetch-all
+  "gr"  'magit-rebase)
+#+end_src

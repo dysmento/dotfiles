@@ -38,6 +38,12 @@
 
 (require 'setup)
 
+(defun my/hook (hook)
+  "Create an org-link target string using `hook://` url scheme."
+  (shell-command (concat "open \"" hook "\"")))
+
+
+(setq frame-title-format '((:eval buffer-file-name)))
 ;; diminish keeps minor modes from adding noise to the modeline
 (setup (:package diminish))
 
@@ -89,6 +95,9 @@
          "C-}" paredit-forward-barf-sexp
          "C-{" paredit-backward-barf-sexp))
 
+(setup (:package yasnippet)
+  (:option yas-global-mode 1))
+
 (setup (:package lsp-mode)
   (:option lsp-enable-which-key-integration t))
 
@@ -102,6 +111,8 @@
 
 (setup (:package yaml-mode))
 
+(setup (:package nix-mode))
+
 (setup (:package rainbow-delimiters)
   (:hook-into prog-mode))
 
@@ -109,8 +120,10 @@
 (setup (:package exec-path-from-shell)
   (exec-path-from-shell-initialize))
 
-(setup (:package cider))
+(setup (:package cider)) 
 
+;; company provides auto-completion for CIDER
+;; see https://docs.cider.mx/cider/usage/code_completion.html
 (setup (:package company)
   (:hook-into cider-mode
               cider-repl-mode))
@@ -136,6 +149,11 @@
 ;; Override some modes which derive from the above
 (dolist (mode '(org-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+;; terraform all the things
+(setup (:package terraform-mode)
+  (:hook terraform-format-on-save-mode
+         lsp))
 
 ;; cosmetic, but nice
 (setq inhibit-startup-message t)
@@ -177,10 +195,32 @@
            org-agenda-files (quote ("~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org"))))
 
 (setup (:package org-roam)
+  (org-roam-db-autosync-mode)
   (:option org-roam-directory (file-truename "~/org-roam")
            org-roam-completion-everywhere t
            org-roam-dailies-directory "daily/"
+           org-roam-capture-templates
+          '(("d" "default" plain "%?"
+             :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                "#+title: ${title}\n")
+             :unarrowed t)
+            ("m" "meeting" plain
+             (file "~/org-roam/templates/MeetingTemplate.org")
+             :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                "#+title: ${title}\n#+filetags: Meetings\n")
+             :unarrowed t)
+            ("b" "book" plain "* Book Info\n\n- Author: %^{Author}\n\n* Notes\n\n  %?"
+             :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                "#+title: ${title}\n#+filetags: :Books: %^{Fiction:?}\n")
+             :unarrowed t))
            org-roam-v2-ack t))
+
+;; this does full-text indexing of the org-roam files
+(setup (:package deft)
+  (:option deft-recursive t
+           deft-use-filter-string-for-filename t
+           deft-default-extension "org"
+           deft-directory (file-truename "~/org-roam")))
 
 (setup (:package org-re-reveal)
   (require 'org-re-reveal)
@@ -254,6 +294,7 @@
   "oc" 'org-capture
   "oe" 'org-export-dispatch
   "on" 'org-cycle-agenda-files
+  "ol" 'org-insert-link
   "p" '(:ignore t :which-key "project")
   "pf" 'counsel-projectile-find-file
   "pp" 'counsel-projectile-switch-project
@@ -261,7 +302,7 @@
   "r" '(:ignore t :which-key "roam")
   "rb" 'org-roam-buffer-toggle
   "rc" 'org-roam-capture
-  "rd" 'org-roam-dailies-capture-today
+  "rd" 'deft
   "rt" 'org-roam-dailies-goto-today
   "ri" 'org-roam-node-insert
   "rf" 'org-roam-node-find
@@ -273,10 +314,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" default))
  '(golden-ratio-mode t)
  '(package-selected-packages
-   '(company rainbow-delimiters jenkinsfile-mode go-mode clj-refactor magit-todos evil-magit treemacs-magit cider-hydra lsp-ivy yaml-mode golden-ratio evil-org org-re-reveal counsel-projectile general treemacs-evil evil-collection evil undo-tree org-roam org-mode org-bullets crux treemacs-projectile treemacs exec-path-from-shell cider lsp-mode paredit clojure-mode magit projectile doom-themes doom-modeline counsel which-key diminish setup))
- '(safe-local-variable-values '((cider-clojure-cli-aliases . "dev"))))
+   '(tagedit smex ido-completing-read+ clojure-mode-extra-font-locking deft nix-mode yasnippet-classic-snippets terraform-doc terraform-mode typescript-mode company rainbow-delimiters jenkinsfile-mode go-mode clj-refactor magit-todos evil-magit treemacs-magit cider-hydra lsp-ivy yaml-mode golden-ratio evil-org org-re-reveal counsel-projectile general treemacs-evil evil-collection evil undo-tree org-roam org-mode org-bullets crux treemacs-projectile treemacs exec-path-from-shell cider lsp-mode paredit clojure-mode magit projectile doom-themes doom-modeline counsel which-key diminish setup))
+ '(safe-local-variable-values '((cider-clojure-cli-aliases . "dev")))
+ '(undo-tree-auto-save-history nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
