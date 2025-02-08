@@ -20,7 +20,8 @@
 (add-to-list 'load-path "~/.emacs.d/configs")
 
 (defvar addons
-  '("ux.el"
+  '("keys.el"
+    "ux.el"
     "witchhazel-theme.el"
 ;;    "terminals.el"
     "projects.el"
