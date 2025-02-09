@@ -2,6 +2,7 @@
   :bind (("s-}" . evil-window-next)
          ("s-{" . evil-window-prev)
          ("s-a" . mark-whole-buffer)
+         ("s-s" . save-buffer)
          ("s-w" . delete-window)
          ("s-z" . undo))
   :config
