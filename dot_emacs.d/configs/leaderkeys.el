@@ -1,7 +1,9 @@
 (use-package general
   :bind (("s-}" . evil-window-next)
          ("s-{" . evil-window-prev)
-         ("s-w" . delete-window))
+         ("s-a" . mark-whole-buffer)
+         ("s-w" . delete-window)
+         ("s-z" . undo))
   :config
   (setq general-evil-setup (boundp 'evil-statez))
   (general-create-definer zt/leader-key-def
