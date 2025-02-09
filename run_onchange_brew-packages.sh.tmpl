@@ -1,4 +1,3 @@
 #!/bin/bash
-brew bundle --no-lock --file=/dev/stdin <<EOF
-{{ include "dot_config/homebrew/Brewfile" }}
-EOF
+# Brewfile hash: {{ include "dot_config/homebrew/Brewfile" | sha256sum }}
+brew bundle --no-lock --file=.config/homebrew/Brewfile
