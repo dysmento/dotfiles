@@ -1,6 +1,6 @@
 [user]
-	name = Zach A. Thomas
-	email = zach.thomas@dividendfinance.com
+	name = {{ .name | quote }}
+	email = {{ .email }}
 	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILytzInE0tJne8iXzT5f+MAnwgUj21538rMmrVhomDWr
 [gpg]
 	format = ssh

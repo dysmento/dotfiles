@@ -1,3 +1,5 @@
+{{ $name := promptString "full name" -}}
+{{ $email := promptString "email" -}}
 encryption = "age"
 [age]
   identity = "{{ .chezmoi.homeDir }}/key.txt"
@@ -9,3 +11,5 @@ encryption = "age"
   brewhome = "/home/linuxbrew/.linuxbrew"
   passwordSigningProgram = "/opt/1Password/op-ssh-sign"
 {{ end }}
+  name = {{ $name | quote }}
+  email = {{ $email | quote }}
