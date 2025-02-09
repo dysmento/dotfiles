@@ -1,4 +1,7 @@
 #!/bin/bash
 # .tool-versions hash: {{ include "dot_tool-versions" | sha256sum }}
+{{ range .plugins -}}
+asdf plugin add {{ . | quote }}
+{{ end -}}
 asdf install
 echo "Finished asdf check."

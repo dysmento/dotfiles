@@ -3,3 +3,4 @@ nodejs 22.13.1
 python 3.13.2
 terraform 1.10.5
 rust 1.84.1
+awscli 2.24.0

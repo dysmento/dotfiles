@@ -2,5 +2,8 @@
 {{ if findOneExecutable (list "brew") (list "/opt/homebrew/bin" "/home/linuxbrew/.linuxbrew/bin") }}
 echo "found brew executable"
 {{ else }}
+    {{ if eq "linux" .chezmoi.os }}
+sudo apt install -y git build-essential gcc docker.io
+    {{ end }}
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 {{ end }}
