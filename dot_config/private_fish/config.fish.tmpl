@@ -15,7 +15,7 @@ if not contains $_asdf_shims $PATH
 end
 set --erase _asdf_shims
 
-set -x PATH {$HOME}/bin {$HOME}/.local/bin $PATH /opt/homebrew/opt/postgresql@16/bin /opt/homebrew/bin {$HOME}/infra/bin
+set -x PATH {$HOME}/bin {$HOME}/.local/bin $PATH {{ .brewhome }}/opt/postgresql@16/bin {{ .brewhome }}/bin {$HOME}/infra/bin
 set -x LC_ALL en_US.UTF-8
 starship init fish | source
 
