@@ -7,9 +7,9 @@ sudo apt install -y git build-essential gcc docker.io
     {{ end }}
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 {{ end }}
-{{ if not lookPath "brew" }}
+{{ if not (lookPath "brew") }}
 eval "$({{ .brewhome }}/bin/brew shellenv)"
 {{ end }}
-{{ if not lookPath "asdf" }}
+{{ if not (lookPath "asdf") }}
 brew install asdf
 {{ end }}
