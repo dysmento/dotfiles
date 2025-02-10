@@ -1,4 +1,34 @@
 #!/bin/bash
-if gh auth status 2>&1 | grep -q "You are not"; then
-    gh auth login
+if ! gh auth status >/dev/null 2>&1; then
+    gh auth login --git-protocol ssh --hostname github.com --web -s admin:public_key -s admin:ssh_signing_key
+fi
+
+REPO_URL="git@github.com:dividendsolar/crawlingchaos.git"
+INNS_URL="git@github.com:dividendsolar/innsmouth.git"
+XAN_URL="git@github.com:dividendsolar/xanadu.git"
+
+if ! git ls-remote "$REPO_URL" >/dev/null 2>&1; then
+    echo "Check settings and make sure your ssh-key is authorized for dividendsolar SSO"
+    echo "Press enter open https://github.com/settings/keys in a browser."
+    read
+    open https://github.com/settings/keys
+    echo "Press enter again when your key is ready to use, and we'll clone some repositories."
+    read
+fi
+
+CODEPATH="{{ .chezmoi.homeDir }}/{{ .codedir }}"
+CCDIR="$CODEPATH/crawlingchaos"
+INNSDIR="$CODEPATH/innsmouth"
+XANDIR="$CODEPATH/xanadu"
+
+if [ ! -d "$CCDIR" ]; then
+    git clone $REPO_URL "$CCDIR"
+fi
+
+if [ ! -d "$INNSDIR" ]; then
+    git clone $INNS_URL "$INNSDIR"
+fi
+
+if [ ! -d "$XANDIR" ]; then
+    git clone $XAN_URL "$XANDIR"
 fi
