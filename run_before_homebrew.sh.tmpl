@@ -6,6 +6,10 @@ echo "found brew executable"
 sudo apt install -y git build-essential gcc docker.io
     {{ end }}
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+{{ end }}
+{{ if ! lookPath "brew" }}
 eval "$({{ .brewhome }}/bin/brew shellenv)"
+{{ end }}
+{{ if ! lookPath "asdf" }}
 brew install asdf
 {{ end }}
