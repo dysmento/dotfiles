@@ -32,4 +32,7 @@ brew "borkdude/brew/clj-kondo"
 brew "borkdude/brew/jet"
 brew "clojure/tools/clojure"
 brew "heroku/brew/heroku"
+{{ if eq "darwin" .chezmoi.os }}
+brew "colima"
 cask "font-fira-code"
+{{ end }}
