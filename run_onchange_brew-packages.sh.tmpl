@@ -1,3 +1,6 @@
 #!/bin/bash
 # Brewfile hash: {{ include "dot_config/homebrew/Brewfile.tmpl" | sha256sum }}
+{{ if not (lookPath "brew") }}
+eval "$({{ .brewhome }}/bin/brew shellenv)"
+{{ end }}
 brew bundle --no-lock --file=.config/homebrew/Brewfile
