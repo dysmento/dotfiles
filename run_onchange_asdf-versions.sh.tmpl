@@ -1,5 +1,8 @@
 #!/bin/bash
 # .tool-versions hash: {{ include "dot_tool-versions" | sha256sum }}
+{{ if not (lookPath "asdf") }}
+eval "$({{ .brewhome }}/bin/brew shellenv)"
+{{ end }}
 {{ range .plugins -}}
 asdf plugin add {{ . | quote }}
 {{ end -}}
