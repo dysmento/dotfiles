@@ -33,6 +33,8 @@ brew "borkdude/brew/jet"
 brew "clojure/tools/clojure"
 brew "heroku/brew/heroku"
 {{ if eq "darwin" .chezmoi.os }}
+tap "d12frosted/emacs-plus"
+brew "d12frosted/emacs-plus/emacs-plus@29", args: ["with-savchenkovaleriy-big-sur-icon"]
 brew "colima"
 cask "font-fira-code"
 {{ end }}
