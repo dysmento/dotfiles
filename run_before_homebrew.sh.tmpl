@@ -6,6 +6,10 @@ echo "found brew executable"
 sudo apt install -y git build-essential gcc docker.io
     {{ end }}
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+echo >> .bashrc
+echo >> .zshrc
+echo 'eval "$({{ .brewhome }}/bin/brew shellenv)"' >> .bashrc
+echo 'eval "$({{ .brewhome }}/bin/brew shellenv)"' >> .zshrc
 {{ end }}
 {{ if not (lookPath "brew") }}
 eval "$({{ .brewhome }}/bin/brew shellenv)"
