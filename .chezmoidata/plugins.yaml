@@ -1,5 +1,6 @@
 plugins:
   - 'java'
   - 'nodejs'
-  - 'python'
+  - 'terraform'
   - 'awscli'
+  - 'rust'
