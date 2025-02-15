@@ -35,7 +35,7 @@
 
 (use-package doom-themes
   :config
-  (load-theme 'doom-dracula t))
+  (load-theme 'doom-zenburn t))
 
 (use-package winum
   :config

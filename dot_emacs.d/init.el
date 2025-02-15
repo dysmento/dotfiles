@@ -48,5 +48,5 @@
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (load custom-file 'noerror)
 
-;; If you remove this, the theme will be doom-dracula
+;; If you remove this, the theme will be doom-zenburn
 (enable-theme 'witchhazel)
