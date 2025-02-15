@@ -3,7 +3,7 @@
 {{ $codedir := promptChoice "Which directory for your code repos" (list "code" "dev" "src") -}}
 encryption = "age"
 [age]
-  identity = "{{ .chezmoi.homeDir }}/key.txt"
+  identity = "{{ .chezmoi.homeDir }}/age-yubikey-identity.txt"
   recipient = "age1p3v5hagp0l65fxz0fzvp3e6mg4kvlhtzcpsecy6ejfejprhmzsvqjqeyre"
 [data]{{ if eq .chezmoi.os "darwin" }}
   brewhome = "/opt/homebrew"

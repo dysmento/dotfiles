@@ -1,0 +1,7 @@
+#       Serial: 17988139, Slot: 1
+#         Name: age-identity-for-Zach
+#      Created: Sat, 15 Feb 2025 21:21:58 +0000
+#   PIN policy: Never  (A PIN is NOT required to decrypt)
+# Touch policy: Cached (A physical touch is required for decryption, and is cached for 15 seconds)
+#    Recipient: age1yubikey1qgz69m24mwcvnfjx8wqrf79ws65jwwnv4sznymduv02s4n3dhjh8je09xey
+AGE-PLUGIN-YUBIKEY-19DAPYQVZLK82MPQPZZ6FL
