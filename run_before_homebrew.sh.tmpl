@@ -1,7 +1,7 @@
 #!/bin/bash
 {{ if not (findOneExecutable (list "brew") (list "/opt/homebrew/bin" "/home/linuxbrew/.linuxbrew/bin")) }}
     {{ if eq "linux" .chezmoi.os }}
-sudo apt install -y git build-essential gcc unzip
+sudo apt install -y git build-essential gcc unzip age
 curl -fsSLo 1password-cli.deb https://downloads.1password.com/linux/debian/amd64/stable/1password-cli-amd64-latest.deb
 sudo dpkg -i 1password-cli.deb
     {{ end }}
@@ -15,8 +15,8 @@ echo 'eval "$({{ .brewhome }}/bin/brew shellenv)"' >> .zshrc
 eval "$({{ .brewhome }}/bin/brew shellenv)"
 {{ end }}
 {{ if not (lookPath "asdf") }}
-brew install asdf age
+brew install asdf
 {{ end }}
 {{ if (and (eq "darwin" .chezmoi.os) (not (findExecutable "op" (list (printf "%s/bin" .brewhome))))) }}
-brew install 1password-cli
+brew install age 1password-cli
 {{ end }}
