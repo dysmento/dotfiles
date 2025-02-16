@@ -15,5 +15,8 @@ echo 'eval "$({{ .brewhome }}/bin/brew shellenv)"' >> .zshrc
 eval "$({{ .brewhome }}/bin/brew shellenv)"
 {{ end }}
 {{ if not (lookPath "asdf") }}
-brew install asdf age age-plugin-yubikey 1password-cli
+brew install asdf age age-plugin-yubikey
+{{ end }}
+{{ if eq "darwin" .chezmoi.os }}
+brew install 1password-cli
 {{ end }}

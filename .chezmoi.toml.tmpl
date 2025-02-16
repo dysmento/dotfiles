@@ -3,8 +3,7 @@
 {{ $codedir := promptChoice "Which directory for your code repos" (list "code" "dev" "src") -}}
 encryption = "age"
 [age]
-  identity = "{{ .chezmoi.homeDir }}/age-yubikey-identity.txt"
-  recipient = "age1p3v5hagp0l65fxz0fzvp3e6mg4kvlhtzcpsecy6ejfejprhmzsvqjqeyre"
+  passphrase = true
 [data]{{ if eq .chezmoi.os "darwin" }}
   brewhome = "/opt/homebrew"
   passwordSigningProgram = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
