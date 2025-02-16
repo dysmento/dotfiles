@@ -17,6 +17,6 @@ eval "$({{ .brewhome }}/bin/brew shellenv)"
 {{ if not (lookPath "asdf") }}
 brew install asdf age
 {{ end }}
-{{ if eq "darwin" .chezmoi.os }}
+{{ if (and (eq "darwin" .chezmoi.os) (not (findExecutable "op" (list (printf "%s/bin" .brewhome))))) }}
 brew install 1password-cli
 {{ end }}
