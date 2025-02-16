@@ -2,6 +2,8 @@
 {{ if not (findOneExecutable (list "brew") (list "/opt/homebrew/bin" "/home/linuxbrew/.linuxbrew/bin")) }}
     {{ if eq "linux" .chezmoi.os }}
 sudo apt install -y git build-essential gcc unzip
+curl -fsSLo 1password-cli.deb https://downloads.1password.com/linux/debian/amd64/stable/1password-cli-amd64-latest.deb
+sudo dpkg -i 1password-cli.deb
     {{ end }}
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 echo >> .bashrc
@@ -13,5 +15,5 @@ echo 'eval "$({{ .brewhome }}/bin/brew shellenv)"' >> .zshrc
 eval "$({{ .brewhome }}/bin/brew shellenv)"
 {{ end }}
 {{ if not (lookPath "asdf") }}
-brew install asdf age age-plugin-yubikey
+brew install asdf age age-plugin-yubikey 1password-cli
 {{ end }}
