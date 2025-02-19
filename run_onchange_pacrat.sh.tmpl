@@ -1,3 +1,5 @@
 #!/bin/bash
 # Nesetfile hash: {{ include "nest.ini" | sha256sum }}
+{{ if (lookPath "zsh") }}
 curl -sSfL https://raw.githubusercontent.com/MicahElliott/pacrat/refs/heads/main/bin/pacrat | zsh
+{{ end }}
