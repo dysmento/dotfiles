@@ -3,4 +3,4 @@
 {{ if not (lookPath "brew") }}
 eval "$({{ .brewhome }}/bin/brew shellenv)"
 {{ end }}
-brew bundle --no-lock --file=.config/homebrew/Brewfile
+brew bundle --file=.config/homebrew/Brewfile
