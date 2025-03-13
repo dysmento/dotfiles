@@ -4,6 +4,7 @@
          ("s-a" . mark-whole-buffer)
          ("s-s" . save-buffer)
          ("s-w" . delete-window)
+         ("M-s-\\" . counsel-yank-pop)
          ("s-z" . undo))
   :config
   (setq general-evil-setup (boundp 'evil-statez))
