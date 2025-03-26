@@ -1,11 +1,12 @@
 [user]
 	name = {{ .name | quote }}
 	email = {{ .email }}
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILytzInE0tJne8iXzT5f+MAnwgUj21538rMmrVhomDWr
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEm5zaoCjcbzsbCXmLxwWaqApB/NMIm1HuVED62xurFm
 [gpg]
 	format = ssh
 [gpg "ssh"]
 	program = {{ .passwordSigningProgram | quote }}
+        allowedSignersFile = {{ .chezmoi.homeDir }}/.config/git/allowed_signers
 [commit]
 	gpgsign = true
 [pull]
