@@ -68,7 +68,7 @@
   "cn" 'cider-test-run-ns-tests
   "cq" 'cider-quit
   "cr" 'cider-hydra-repl/body
-  "cs" 'sfm-toggle
+  "cs" 'clj-switch-profile
   "ct" 'cider-hydra-test/body
   "d"  'delete-other-windows
   "e"  'ace-window

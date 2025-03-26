@@ -32,8 +32,24 @@
 
 (use-package jet)
 
+(use-package neil
+  :defer t
+  :ensure t
+  :custom
+  (neil-prompt-for-version-p nil)
+  (neil-inject-dep-to-project-p t))
+
 (defun jet-json-to-clipboard ()
   (interactive)
   (jet-to-clipboard (jet--thing-at-point) '("-k" "--from=json" "--to=edn")))
 
 (use-package quick-peek)
+
+(defun clj-switch-profile ()
+  "Quit the current CIDER session and restart with a universal argument."
+  (interactive)
+  (when (cider-connected-p)
+    (cider-quit))
+  (let ((current-prefix-arg '(4)))  ;; Simulate C-u (universal argument)
+    (call-interactively #'cider-jack-in-clj)))
+
