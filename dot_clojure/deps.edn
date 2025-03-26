@@ -1,0 +1,14 @@
+{:aliases
+ {:cider
+  {:extra-deps {cider/cider-nrepl             {:mvn/version "0.52.1"}
+                nrepl/nrepl                   {:mvn/version "RELEASE"}
+                refactor-nrepl/refactor-nrepl {:mvn/version "RELEASE"}}
+   :main-opts  ["-m" "nrepl.cmdline"
+                "--middleware" "[refactor-nrepl.middleware/wrap-refactor,cider.nrepl/cider-middleware]"
+                "--interactive"]}
+
+  :profiler
+  {:extra-deps {criterium/criterium {:mvn/version "0.4.6"}}}
+  :my/portal
+  {:extra-paths ["/Users/zach.thomas/.clojure/src"]
+   :extra-deps {djblue/portal {:mvn/version "RELEASE"}}}}}
