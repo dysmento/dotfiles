@@ -1,9 +1,3 @@
 syntax on
 set number
 
-" Initialize Vim-Plug
-call plug#begin('~/.vim/plugged')
-Plug 'tpope/vim-sexp'
-Plug 'jeetsukumaran/vim-paredit'
-cal plug#end()
-
