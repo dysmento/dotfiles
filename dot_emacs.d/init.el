@@ -16,7 +16,6 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-(add-to-list 'load-path "~/dev/crawlingchaos/editors/elisp")
 (add-to-list 'load-path "~/.emacs.d/configs")
 
 (defvar addons

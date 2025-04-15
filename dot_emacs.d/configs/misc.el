@@ -9,6 +9,8 @@
   :config (setq auto-save-file-name-transforms
                 `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 
+(use-package terraform-mode)
+
 (use-package crux
   :bind (("s-r" . crux-recentf-find-file)
 	 ("C-c t" . crux-visit-term-buffer)
