@@ -13,3 +13,5 @@
 	rebase = true
 [core]
 	excludesfile = {{ .chezmoi.homeDir }}/.gitignore_global
+[includeIf "gitdir:{{ .chezmoi.homeDir }}/rent-corp/"]
+	path = {{ .chezmoi.homeDir }}/rent-corp/.gitconfig
