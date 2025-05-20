@@ -32,6 +32,9 @@
 
 (use-package jet)
 
+(use-package flycheck
+  :hook after-init)
+
 (use-package neil
   :defer t
   :ensure t
@@ -44,6 +47,8 @@
   (jet-to-clipboard (jet--thing-at-point) '("-k" "--from=json" "--to=edn")))
 
 (use-package quick-peek)
+
+(use-package expand-region)
 
 (defun clj-switch-profile ()
   "Quit the current CIDER session and restart with a universal argument."
