@@ -2,5 +2,5 @@ java temurin-17.0.15+6
 nodejs 22.13.1
 terraform 1.11.0-beta2
 rust 1.84.1
-awscli 2.24.8
+awscli 2.27.18
 python 3.11.12

@@ -24,6 +24,9 @@
 (use-package company
   :hook (cider-mode cider-repl-mode))
 
+(use-package company-box
+  :hook company-mode)
+
 (use-package cider-hydra
   :hook clojure-mode)
 
