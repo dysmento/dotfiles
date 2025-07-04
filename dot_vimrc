@@ -1,3 +1,9 @@
 syntax on
 set number
 
+if &term =~ 'xterm\|rxvt\|alacritty\|tmux'
+    let &t_SI = "\e[6 q"   " Insert mode: Beam cursor
+    let &t_EI = "\e[2 q"   " Normal mode: Block cursor
+    let &t_SR = "\e[4 q"   " Replace mode: Underline cursor
+endif
+

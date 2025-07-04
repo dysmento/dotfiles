@@ -2,6 +2,8 @@
   :bind (("s-}" . evil-window-next)
          ("s-{" . evil-window-prev)
          ("s-a" . mark-whole-buffer)
+         ("s-k" . kill-this-buffer)
+         ("s-/" . comment-or-uncomment-region)
          ("s-s" . save-buffer)
          ("s-w" . delete-window)
          ("M-s-\\" . counsel-yank-pop)

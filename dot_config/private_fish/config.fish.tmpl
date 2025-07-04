@@ -16,7 +16,7 @@ end
 set --erase _asdf_shims
 
 set -x CONFLUENT_HOME {$HOME}/confluent-7.9.0
-set -x PATH {$CONFLUENT_HOME}/bin {$HOME}/bin {$HOME}/.local/bin $PATH {{ .brewhome }}/opt/postgresql@16/bin {{ .brewhome }}/bin {$HOME}/infra/bin
+set -x PATH {{ .brewhome }}/bin {$CONFLUENT_HOME}/bin {$HOME}/bin {$HOME}/.local/bin $PATH {{ .brewhome }}/opt/postgresql@16/bin {$HOME}/infra/bin
 set -x LC_ALL en_US.UTF-8
 starship init fish | source
 
