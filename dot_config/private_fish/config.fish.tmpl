@@ -15,14 +15,26 @@ if not contains $_asdf_shims $PATH
 end
 set --erase _asdf_shims
 
+set -x REDFIN_MAIN {$HOME}/code/main
+set -x REDFIN_GLOBAL_DEVCONTAINERS_ENV_FILE /usr/local/redfin/devcontainers/global.env
+set -x REDFIN_DATA_SECURE /usr/local/redfin/data/secure
+set -x DEFAULT_KAFKA_SSL_TRUSTSTORE_LOCATION /usr/local/redfin/data/secure/ssl/default.kafka.client.truststore.jks
+set -x DEFAULT_KAFKA_SSL_TRUSTSTORE_PASSWORD (cat /usr/local/redfin/data/secure/ssl/default.truststore.password)
 set -x CONFLUENT_HOME {$HOME}/confluent-7.9.0
-set -x PATH {{ .brewhome }}/bin {$CONFLUENT_HOME}/bin {$HOME}/bin {$HOME}/.local/bin $PATH {{ .brewhome }}/opt/postgresql@16/bin {$HOME}/infra/bin
+set -x PATH {$HOME}/n/bin {{ .brewhome }}/bin {$HOME}/code/fin/bin {$CONFLUENT_HOME}/bin {$HOME}/bin {$HOME}/.local/bin $PATH {{ .brewhome }}/opt/postgresql@16/bin {$HOME}/infra/bin
 set -x LC_ALL en_US.UTF-8
 starship init fish | source
+set -x JAVA_HOME (asdf where java)
 
 
 test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
 direnv hook fish | source
 
+fzf --fish | source
+
 alias ls='eza'
 alias tree='lsd --tree'
+alias corvair=$REDFIN_MAIN/bin/corvair
+
+ulimit -n 8000
+

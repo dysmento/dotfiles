@@ -41,6 +41,8 @@
   :config
   (winum-mode))
 
+(use-package golden-ratio)
+
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (tooltip-mode -1)

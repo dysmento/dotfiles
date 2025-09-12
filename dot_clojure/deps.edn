@@ -1,6 +1,6 @@
 {:aliases
  {:cider
-  {:extra-deps {cider/cider-nrepl             {:mvn/version "0.55.1"}
+  {:extra-deps {cider/cider-nrepl             {:mvn/version "0.57.0"}
                 nrepl/nrepl                   {:mvn/version "RELEASE"}
                 refactor-nrepl/refactor-nrepl {:mvn/version "RELEASE"}}
    :main-opts  ["-m" "nrepl.cmdline"

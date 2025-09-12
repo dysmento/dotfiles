@@ -15,3 +15,10 @@
 	excludesfile = {{ .chezmoi.homeDir }}/.gitignore_global
 [includeIf "gitdir:{{ .chezmoi.homeDir }}/rent-corp/"]
 	path = {{ .chezmoi.homeDir }}/rent-corp/.gitconfig
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[init]
+	defaultBranch = main

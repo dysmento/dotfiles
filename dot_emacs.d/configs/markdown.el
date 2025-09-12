@@ -4,3 +4,5 @@
   (add-hook 'markdown-mode-hook (lambda () (display-fill-column-indicator-mode t)
                                            (set-fill-column 100))))
 
+(use-package adoc-mode)
+
