@@ -28,6 +28,7 @@ set -x LC_ALL en_US.UTF-8
 starship init fish | source
 set -x JAVA_HOME (asdf where java)
 
+set -x CLAUDE_CODE_NEW_INIT 1
 
 test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
 direnv hook fish | source
