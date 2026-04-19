@@ -1,0 +1,59 @@
+#!/bin/bash
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") -}}
+if command -v yay &>/dev/null; then
+    AUR_HELPER=yay
+elif command -v paru &>/dev/null; then
+    AUR_HELPER=paru
+else
+    echo "No AUR helper found (yay or paru). Cannot install packages." >&2
+    exit 1
+fi
+
+$AUR_HELPER -S --needed --noconfirm \
+    1password-cli \
+    age \
+    alsa-lib \
+    asdf-vm \
+    azure-cli \
+    babashka-bin \
+    bat \
+    bazelisk \
+    clj-kondo-bin \
+    cloc \
+    clojure \
+    clojure-lsp-bin \
+    direnv \
+    docker \
+    docker-compose \
+    dolt \
+    eksctl-bin \
+    eza \
+    fd \
+    figlet \
+    fish \
+    flyctl \
+    fswatch \
+    fzf \
+    git \
+    github-cli \
+    glow \
+    gum \
+    helm \
+    hugo \
+    httpie \
+    jq \
+    kubectl \
+    lsd \
+    pgbouncer \
+    ripgrep \
+    rlwrap \
+    shellcheck \
+    sqlite \
+    starship \
+    tmux \
+    uv \
+    vault-bin \
+    wget \
+    yq \
+    zig
+{{- end }}

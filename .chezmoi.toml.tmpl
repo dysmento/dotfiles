@@ -7,10 +7,13 @@ encryption = "age"
 [data]{{ if eq .chezmoi.os "darwin" }}
   brewhome = "/opt/homebrew"
   passwordSigningProgram = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
-{{ else if eq .chezmoi.os "linux" }}
+{{ else if eq .chezmoi.os "linux" }}{{ if eq .chezmoi.osRelease.id "arch" }}
+  brewhome = ""
+  passwordSigningProgram = "/opt/1Password/op-ssh-sign"
+{{ else }}
   brewhome = "/home/linuxbrew/.linuxbrew"
   passwordSigningProgram = "/opt/1Password/op-ssh-sign"
-{{ end }}
+{{ end }}{{ end }}
   name = {{ $name | quote }}
   email = {{ $email | quote }}
   codedir = {{ $codedir | quote }}

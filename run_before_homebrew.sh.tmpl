@@ -1,4 +1,15 @@
 #!/bin/bash
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") -}}
+# Install base development tools
+sudo pacman -S --needed --noconfirm base-devel git
+
+# Install yay AUR helper if no AUR helper is present
+if ! command -v yay &>/dev/null && ! command -v paru &>/dev/null; then
+    git clone https://aur.archlinux.org/yay.git /tmp/yay
+    (cd /tmp/yay && makepkg -si --noconfirm)
+    rm -rf /tmp/yay
+fi
+{{- else -}}
 {{ if not (findOneExecutable (list "brew") (list "/opt/homebrew/bin" "/home/linuxbrew/.linuxbrew/bin")) }}
     {{ if eq "linux" .chezmoi.os }}
 sudo apt install -y git build-essential gcc unzip age
@@ -20,3 +31,4 @@ brew install asdf
 {{ if (and (eq "darwin" .chezmoi.os) (not (findExecutable "op" (list (printf "%s/bin" .brewhome))))) }}
 brew install age 1password-cli
 {{ end }}
+{{- end }}

@@ -1,6 +1,8 @@
 #!/bin/bash
+{{ if not (and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch")) -}}
 # Brewfile hash: {{ include "dot_config/homebrew/Brewfile.tmpl" | sha256sum }}
 {{ if not (lookPath "brew") }}
 eval "$({{ .brewhome }}/bin/brew shellenv)"
 {{ end }}
 brew bundle --file=.config/homebrew/Brewfile
+{{- end }}
