@@ -16,6 +16,7 @@ end
 set --erase _asdf_shims
 
 set -x REDFIN_MAIN {$HOME}/code/main
+set -x REDFIN_NPM  {$HOME}/code/redfin-npm
 set -x REDFIN_GLOBAL_DEVCONTAINERS_ENV_FILE /usr/local/redfin/devcontainers/global.env
 set -x REDFIN_DATA_SECURE /usr/local/redfin/data/secure
 set -x DEFAULT_KAFKA_SSL_TRUSTSTORE_LOCATION /usr/local/redfin/data/secure/ssl/default.kafka.client.truststore.jks
@@ -33,6 +34,7 @@ starship init fish | source
 set -x JAVA_HOME (asdf where java)
 
 set -x CLAUDE_CODE_NEW_INIT 1
+set -x ANTHROPIC_MODEL sonnet
 
 test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
 direnv hook fish | source
@@ -43,5 +45,5 @@ alias ls='eza'
 alias tree='lsd --tree'
 alias corvair=$REDFIN_MAIN/bin/corvair
 
-ulimit -n 8000
+ulimit -n 65536
 

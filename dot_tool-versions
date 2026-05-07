@@ -1,7 +1,7 @@
 java temurin-17.0.17+10
 terraform 1.13.3
 rust 1.84.1
-awscli 2.27.18
+awscli 2.34.43
 python 3.11.12
 golang 1.26.1
 nodejs 24.14.0
