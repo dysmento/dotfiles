@@ -17,6 +17,7 @@ set -x PATH {$HOME}/code/fin/bin {$CONFLUENT_HOME}/bin {$HOME}/.local/bin $PATH
 {{- end }}
 set -x LC_ALL en_US.UTF-8
 starship init fish | source
+atuin init fish | source
 
 set -x CLAUDE_CODE_NEW_INIT 1
 set -x ANTHROPIC_MODEL sonnet
