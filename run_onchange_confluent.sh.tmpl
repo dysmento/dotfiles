@@ -1,0 +1,15 @@
+#!/bin/bash
+# confluent-version: {{ .confluentVersion }}
+set -euo pipefail
+
+CONFLUENT_DIR="${HOME}/confluent-{{ .confluentVersion }}"
+TARBALL="confluent-community-{{ .confluentVersion }}.tar.gz"
+URL="https://packages.confluent.io/archive/{{ .confluentMinorVersion }}/${TARBALL}"
+
+if [ ! -d "${CONFLUENT_DIR}" ]; then
+    echo "Downloading Confluent Community ${TARBALL}..."
+    curl -O "${URL}"
+    tar -xzf "${TARBALL}" -C "${HOME}"
+    rm -f "${TARBALL}"
+    echo "Confluent installed to ${CONFLUENT_DIR}"
+fi
