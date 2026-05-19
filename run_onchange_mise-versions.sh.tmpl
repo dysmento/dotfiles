@@ -1,5 +1,5 @@
 #!/bin/bash
-# mise config hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+# mise config hash: {{ include "dot_config/mise/config.toml.tmpl" | sha256sum }}
 {{ if not (and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch")) -}}
 {{ if not (lookPath "mise") }}
 eval "$({{ .brewhome }}/bin/brew shellenv)"
