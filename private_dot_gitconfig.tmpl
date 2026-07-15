@@ -1,7 +1,7 @@
 [user]
 	name = {{ .name | quote }}
 	email = {{ .email }}
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEm5zaoCjcbzsbCXmLxwWaqApB/NMIm1HuVED62xurFm
+	signingkey = ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5K3w6h6JJmKk4Xvn4MUKp4f9R0uu9AXyc1eIlILDS0/0BcCMuMHYSMvhJYu9d96RCAng1tSWbs978zuPRmKPM8M9nM6irYJFKnl9I/W3Kwn8DZ/osDfeBzIsFyRXtf3n/+ZK6jLc9ha6W3V1cDXLFpwMxtFOvAuFkxjpEndkeHBoIzhTNOve0JS8HJ9f/kjlN+4FtxWporndCk8QLb6aapwMhMaEjGj14Ij4OscPVMTmfHrISyOfqLc8IhTv4F3l+8YBhxLHEajqrwJsnVTdFFbX5W2NJhQPJH0GsvbUfx0bQyHSQ/Dlf75+SapbzLm6pVeIyP0KlOjZiu5Z2OPM7
 [gpg]
 	format = ssh
 [gpg "ssh"]
@@ -24,7 +24,7 @@
 	defaultBranch = main
 [credential "https://github.com"]
 	helper = 
-	helper = !{{ lookPath "gh" }} auth git-credential
+	helper = {{ .chezmoi.homeDir }}/.local/share/mise/shims/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper =
-	helper = !{{ lookPath "gh" }} auth git-credential
+	helper = {{ .chezmoi.homeDir }}/.local/share/mise/shims/gh auth git-credential

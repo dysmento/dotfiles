@@ -6,6 +6,8 @@ set -x REDFIN_NPM  {$HOME}/code/redfin-npm
 set -x REDFIN_GLOBAL_DEVCONTAINERS_ENV_FILE /usr/local/redfin/devcontainers/global.env
 set -x REDFIN_DATA_SECURE /usr/local/redfin/data/secure
 set -x DEFAULT_KAFKA_SSL_TRUSTSTORE_LOCATION /usr/local/redfin/data/secure/ssl/default.kafka.client.truststore.jks
+set -x CDK_BASE_URL https://conduktor.redfintest.com
+
 if test -e /usr/local/redfin/data/secure/ssl/default.truststore.password
   set -x DEFAULT_KAFKA_SSL_TRUSTSTORE_PASSWORD (cat /usr/local/redfin/data/secure/ssl/default.truststore.password)
 end
