@@ -15,11 +15,16 @@ set -x CONFLUENT_HOME {$HOME}/confluent-{{ .confluentVersion }}
 {{ if .brewhome -}}
 set -x PATH {$HOME}/n/bin {{ .brewhome }}/bin {$HOME}/code/fin/bin {$CONFLUENT_HOME}/bin {$HOME}/bin {$HOME}/.local/bin $PATH {{ .brewhome }}/opt/postgresql@16/bin {$HOME}/infra/bin
 {{- else -}}
-set -x PATH {$HOME}/code/fin/bin {$CONFLUENT_HOME}/bin {$HOME}/.local/bin $PATH
+set -x PATH {$HOME}/code/fin/bin {$CONFLUENT_HOME}/bin {$HOME}/bin {$HOME}/.local/bin $PATH
 {{- end }}
 set -x LC_ALL en_US.UTF-8
 starship init fish | source
 atuin init fish | source
+mise activate fish | source
+{{ if eq .chezmoi.os "linux" -}}
+# 1Password SSH agent (Linux); macOS is handled by ~/.ssh/config IdentityAgent
+set -x SSH_AUTH_SOCK {$HOME}/.1password/agent.sock
+{{ end -}}
 
 set -x CLAUDE_CODE_NEW_INIT 1
 set -x ANTHROPIC_MODEL sonnet

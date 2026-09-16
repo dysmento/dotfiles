@@ -1,13 +1,16 @@
 #!/bin/bash
-{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") -}}
-# Install base development tools
-sudo pacman -S --needed --noconfirm base-devel git
+{{ if .isArch -}}
+# Minimal toolchain so the rest of the apply can succeed:
+#  - age: needed to decrypt encrypted files (e.g. .aws/credentials) during apply
+#  - base-devel/git: needed to build AUR packages
+sudo pacman -S --needed --noconfirm base-devel git age
 
 # Install yay AUR helper if no AUR helper is present
 if ! command -v yay &>/dev/null && ! command -v paru &>/dev/null; then
-    git clone https://aur.archlinux.org/yay.git /tmp/yay
-    (cd /tmp/yay && makepkg -si --noconfirm)
-    rm -rf /tmp/yay
+    builddir=$(mktemp -d)
+    git clone https://aur.archlinux.org/yay.git "$builddir/yay"
+    (cd "$builddir/yay" && makepkg -si --noconfirm)
+    rm -rf "$builddir"
 fi
 {{- else -}}
 {{ if not (findOneExecutable (list "brew") (list "/opt/homebrew/bin" "/home/linuxbrew/.linuxbrew/bin")) }}
@@ -15,6 +18,7 @@ fi
 sudo apt install -y git build-essential gcc unzip age
 curl -fsSLo 1password-cli.deb https://downloads.1password.com/linux/debian/amd64/stable/1password-cli-amd64-latest.deb
 sudo dpkg -i 1password-cli.deb
+rm -f 1password-cli.deb
     {{ end }}
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 echo >> .bashrc
@@ -24,9 +28,6 @@ echo 'eval "$({{ .brewhome }}/bin/brew shellenv)"' >> .zshrc
 {{ end }}
 {{ if not (lookPath "brew") }}
 eval "$({{ .brewhome }}/bin/brew shellenv)"
-{{ end }}
-{{ if not (lookPath "asdf") }}
-brew install asdf
 {{ end }}
 {{ if (and (eq "darwin" .chezmoi.os) (not (findExecutable "op" (list (printf "%s/bin" .brewhome))))) }}
 brew install age 1password-cli

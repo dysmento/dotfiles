@@ -2,58 +2,21 @@
 _.file = '.env'
 GITHUB_TOKEN = "{{ "{{" }}exec(command='gh auth token'){{ "}}" }}"
 
+# mise manages only language runtimes and terraform — things that need
+# per-project version pinning. Everything else comes from the OS package
+# manager (pacman on Arch, Brewfile elsewhere) and just tracks latest.
 [tools]
 java = "temurin-17.0.19+10"
 terraform = "1.13.3"
 rust = "1.84.1"
-awscli = "latest"
 python = "3.14.5"
 go = "1.26.1"
 node = "24.14.0"
-xh = "latest"
-age = "latest"
-asciidoctorj = "latest"
-atuin = "latest"
-sqlite = "latest"
-azure-cli = "latest"
-bat = "latest"
-bazelisk = "latest"
-chezmoi = "latest"
-{{ if eq "darwin" .chezmoi.os -}}
-colima = "latest"
-{{ end -}}
-cookiecutter = "latest"
-direnv = "latest"
-docker-compose = "latest"
 elixir = "latest"
-eza = "latest"
-fd = "latest"
-flyctl = "latest"
-fzf = "latest"
-gh = "latest"
-git-lfs = "latest"
-glow = "latest"
-gum = "latest"
-helm = "latest"
-hugo = "latest"
-jq = "latest"
-just = "latest"
-leiningen = "latest"
-lsd = "latest"
-ripgrep = "latest"
-shellcheck = "latest"
-starship = "latest"
-tfenv = "latest"
-tmux = "latest"
-uv = "latest"
-yq = "latest"
-zig = "latest"
-acli = "latest"
-eksctl = "latest"
-babashka = "latest"
-clj-kondo = "latest"
-clojure = "latest"
-vault = "latest"
-1password-cli = "latest"
+{{ if .isArch -}}
+# No Arch package exists for asciidoctorj; it rides on the mise-managed java.
+asciidoctorj = "latest"
+{{ end -}}
+# npm globals live under the mise-managed node, so they stay here.
 "npm:gh-axi" = "latest"
 "npm:chrome-devtools-axi" = "latest"

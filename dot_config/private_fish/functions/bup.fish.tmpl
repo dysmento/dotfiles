@@ -1,0 +1,15 @@
+{{ if .isArch -}}
+function bup --description 'upgrade all packages (repos + AUR)'
+    if command -q yay
+        yay -Syu $argv
+    else if command -q paru
+        paru -Syu $argv
+    else
+        sudo pacman -Syu $argv
+    end
+end
+{{- else -}}
+function bup --wraps='brew upgrade' --description 'alias bup=brew upgrade'
+    brew upgrade $argv
+end
+{{- end }}

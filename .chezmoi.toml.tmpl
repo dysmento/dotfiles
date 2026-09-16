@@ -1,19 +1,32 @@
-{{ $name := promptString "full name" -}}
-{{ $email := promptString "work email" -}}
-{{ $codedir := promptChoice "Which directory for your code repos" (list "code" "dev" "src") -}}
+{{ $name := promptStringOnce . "name" "full name" -}}
+{{ $email := promptStringOnce . "email" "work email" -}}
+{{ $codedir := promptChoiceOnce . "codedir" "Which directory for your code repos" (list "code" "dev" "src") -}}
+{{/* Arch and derivatives (CachyOS, EndeavourOS, Manjaro, ...) all set ID=arch or ID_LIKE=arch */ -}}
+{{ $isArch := false -}}
+{{ if eq .chezmoi.os "linux" -}}
+{{   $osr := .chezmoi.osRelease -}}
+{{   if or (eq $osr.id "arch") (has "arch" (splitList " " ($osr.idLike | default ""))) -}}
+{{     $isArch = true -}}
+{{   end -}}
+{{ end -}}
 encryption = "age"
 [age]
   passphrase = true
-[data]{{ if eq .chezmoi.os "darwin" }}
+[data]
+  isArch = {{ $isArch }}
+{{- if eq .chezmoi.os "darwin" }}
   brewhome = "/opt/homebrew"
+  ghPath = "/opt/homebrew/bin/gh"
   passwordSigningProgram = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
-{{ else if eq .chezmoi.os "linux" }}{{ if eq .chezmoi.osRelease.id "arch" }}
+{{- else if $isArch }}
   brewhome = ""
+  ghPath = "/usr/bin/gh"
   passwordSigningProgram = "/opt/1Password/op-ssh-sign"
-{{ else }}
+{{- else }}
   brewhome = "/home/linuxbrew/.linuxbrew"
+  ghPath = "/home/linuxbrew/.linuxbrew/bin/gh"
   passwordSigningProgram = "/opt/1Password/op-ssh-sign"
-{{ end }}{{ end }}
+{{- end }}
   name = {{ $name | quote }}
   email = {{ $email | quote }}
   codedir = {{ $codedir | quote }}
