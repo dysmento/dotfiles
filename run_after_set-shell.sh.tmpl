@@ -1,0 +1,37 @@
+#!/bin/bash
+# Make fish the login shell. Idempotent: only acts when the current login
+# shell differs, so it's safe as a run_after_ that runs on every apply.
+set -euo pipefail
+
+{{ if .isArch -}}
+fish=/usr/bin/fish
+{{- else -}}
+fish={{ .brewhome }}/bin/fish
+{{- end }}
+
+{{ if eq .chezmoi.os "darwin" -}}
+current=$(dscl . -read "/Users/$USER" UserShell | awk '{print $2}')
+{{- else -}}
+current=$(getent passwd "$USER" | cut -d: -f7)
+{{- end }}
+
+if [ "$current" = "$fish" ]; then
+    exit 0
+fi
+
+if [ ! -x "$fish" ]; then
+    echo "fish not found at $fish; skipping login shell change" >&2
+    exit 0
+fi
+
+if [ ! -t 0 ]; then
+    echo "No TTY available for chsh; run 'chsh -s $fish' manually." >&2
+    exit 0
+fi
+
+if ! grep -qx "$fish" /etc/shells; then
+    echo "$fish" | sudo tee -a /etc/shells >/dev/null
+fi
+
+chsh -s "$fish"
+echo "Login shell set to $fish; takes effect on next login."
