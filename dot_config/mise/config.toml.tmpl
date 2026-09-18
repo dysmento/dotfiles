@@ -6,12 +6,12 @@ GITHUB_TOKEN = "{{ "{{" }}exec(command='gh auth token'){{ "}}" }}"
 # per-project version pinning. Everything else comes from the OS package
 # manager (pacman on Arch, Brewfile elsewhere) and just tracks latest.
 [tools]
-java = "temurin-17.0.19+10"
-terraform = "1.13.3"
-rust = "1.84.1"
-python = "3.14.5"
-go = "1.26.1"
-node = "24.14.0"
+java = "temurin-17.0.20"
+terraform = "1.16.3"
+rust = "1.98.1"
+python = "3.14.7"
+go = "1.27.1"
+node = "26.9.0"
 elixir = "latest"
 {{ if .isArch -}}
 # No Arch package exists for asciidoctorj; it rides on the mise-managed java.
