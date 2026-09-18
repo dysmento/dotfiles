@@ -108,6 +108,11 @@ desktop_packages=(
     sfizz-standalone      # sfizz_jack for Scripts/sfizz-piano.sh
 )
 
+# Plasma: alternate desktop session, selectable from the greeter's session menu
+plasma_packages=(
+    plasma-desktop
+)
+
 # Virtualization: try out other distros in VMs without touching the boot loader
 virt_packages=(
     qemu-full
@@ -119,7 +124,7 @@ virt_packages=(
     quickemu
 )
 
-$AUR_HELPER -S --needed --noconfirm "${cli_packages[@]}" "${desktop_packages[@]}" "${virt_packages[@]}"
+$AUR_HELPER -S --needed --noconfirm "${cli_packages[@]}" "${desktop_packages[@]}" "${plasma_packages[@]}" "${virt_packages[@]}"
 
 # Docker needs its service running and the user in the docker group.
 if ! systemctl is-enabled --quiet docker; then
