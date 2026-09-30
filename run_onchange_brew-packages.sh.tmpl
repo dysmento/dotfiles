@@ -1,6 +1,6 @@
 #!/bin/bash
 {{ if not .isArch -}}
-# Brewfile hash: {{ include "dot_config/homebrew/Brewfile.tmpl" | sha256sum }}
+# Brewfile hash: {{ include "dot_config/private_homebrew/Brewfile.tmpl" | sha256sum }}
 {{ if not (lookPath "brew") }}
 eval "$({{ .brewhome }}/bin/brew shellenv)"
 {{ end }}
