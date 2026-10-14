@@ -1,2 +1,11 @@
 Host *
 	IdentityAgent ~/.1password/agent.sock
+
+Host mac
+	HostName famslays.duckdns.org
+	User zach.thomas
+	ControlMaster auto
+	ControlPath ~/.ssh/cm-%C
+	ControlPersist yes
+	ServerAliveInterval 30
+	ServerAliveCountMax 6
